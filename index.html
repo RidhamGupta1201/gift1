@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday Mummy 💛</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,system-ui;}
+
+body{
+  background:linear-gradient(180deg,#fff6ea,#fefcff);
+  color:#222;
+  overflow-x:hidden;
+}
+
+section{
+  min-height:100vh;
+  padding:8vw;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  position:relative;
+}
+
+/* HERO */
+
+.hero{
+  background:
+    radial-gradient(circle at 20% 20%,#ffd6ec 0%,transparent 40%),
+    radial-gradient(circle at 80% 30%,#c5f4ff 0%,transparent 40%),
+    radial-gradient(circle at 50% 80%,#fff2b3 0%,transparent 40%);
+  text-align:center;
+}
+
+.hero h1{
+  font-size:clamp(3rem,7vw,6rem);
+  line-height:1;
+}
+
+.hero p{
+  margin-top:20px;
+  font-size:1.2rem;
+  opacity:.8;
+}
+
+/* STORY */
+
+.story{
+  flex-direction:row;
+  gap:60px;
+  max-width:1100px;
+}
+
+.story img{
+  width:380px;
+  height:420px;
+  border-radius:26px;
+  object-fit:cover;
+  background:#ddd;
+}
+
+.story .text{
+  max-width:500px;
+  font-size:1.1rem;
+  line-height:1.7;
+}
+
+/* ENVELOPE LETTER */
+
+.letter-section{
+  background:
+    radial-gradient(circle at 20% 20%,#ffe4f2 0%,transparent 45%),
+    radial-gradient(circle at 80% 30%,#e0f6ff 0%,transparent 45%);
+}
+
+.envelope-wrapper{
+  width:300px;
+  height:200px;
+  position:relative;
+  cursor:pointer;
+  perspective:1000px;
+}
+
+.envelope{
+  position:absolute;
+  inset:0;
+  background:#ffdf8a;
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 20px 40px rgba(0,0,0,.15);
+}
+
+.env-front{
+  position:absolute;
+  inset:0;
+  background:#ffd15c;
+  clip-path:polygon(0 0,100% 0,50% 60%);
+  z-index:3;
+}
+
+.env-back{
+  position:absolute;
+  inset:0;
+  background:#ffeaa7;
+}
+
+.env-button{
+  position:absolute;
+  left:50%;
+  top:65%;
+  transform:translate(-50%,-50%);
+  background:white;
+  border:none;
+  padding:10px 18px;
+  border-radius:20px;
+  font-weight:600;
+  cursor:pointer;
+  z-index:5;
+}
+
+/* VALUES */
+
+.values{
+  max-width:1000px;
+  width:100%;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:30px;
+}
+
+.card{
+  padding:30px;
+  border-radius:22px;
+  background:rgba(255,255,255,.7);
+  backdrop-filter:blur(8px);
+  box-shadow:0 10px 25px rgba(0,0,0,.08);
+  text-align:center;
+  font-weight:600;
+}
+
+/* GALLERY */
+
+.gallery{
+  max-width:1000px;
+  width:100%;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+}
+
+.photo{
+  height:220px;
+  border-radius:20px;
+  background:linear-gradient(135deg,#ffd6e8,#c5f4ff);
+}
+
+/* OUTRO */
+
+.outro{
+  text-align:center;
+  font-size:clamp(2rem,5vw,4rem);
+  background:
+    radial-gradient(circle at 30% 30%,#ffe9b5,transparent 40%),
+    radial-gradient(circle at 70% 60%,#ffd6ec,transparent 40%);
+}
+
+/* popup overlay */
+
+.letter-popup{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.25);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+  pointer-events:none;
+  opacity:0;
+}
+
+/* actual paper */
+
+.letter-content{
+  width:80vw;
+  height:80vh;
+  background:white;
+  border-radius:22px;
+  padding:40px;
+  font-size:1.05rem;
+  line-height:1.7;
+  overflow-y:auto;
+  box-shadow:0 30px 60px rgba(0,0,0,.25);
+  transform:scale(0.8);
+}
+/* close button */
+
+.close-letter{
+  position:absolute;
+  top:40px;
+  right:40px;
+  background:white;
+  border:none;
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  font-size:18px;
+  cursor:pointer;
+  box-shadow:0 10px 20px rgba(0,0,0,.15);
+}
+
+#particlesCanvas{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+}
+section{
+  position:relative;
+  z-index:1;
+}
+
+
+/* INTRO */
+
+.intro-screen{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(135deg,#ffd6ec,#c5f4ff,#fff2b3);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  z-index:10000;
+}
+
+#typeLine{
+  font-size:clamp(1.5rem,3vw,2.5rem);
+  font-weight:500;
+  margin-bottom:40px;
+}
+
+#presentsText{
+  font-size:clamp(3rem,8vw,8rem);
+  font-weight:700;
+  opacity:0;
+  transform:scale(0.5);
+  text-shadow:
+    0 0 10px #ff4d6d,
+    0 0 20px #ff4d6d,
+    0 0 40px #ff4d6d;
+}
+/* ================= CINEMATIC MEMORIES GRID ================= */
+
+.memories-section{
+  min-height:120vh;
+  padding-top:10vh;
+  padding-bottom:15vh;
+  text-align:center;
+}
+
+.memories-grid{
+  max-width:1200px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(120px, 1fr));
+  gap:18px;
+}
+
+.memory-item{
+  width:100%;
+  aspect-ratio:1/1;
+  object-fit:cover;
+  border-radius:18px;
+  transform:scale(0.75);
+  opacity:0;
+  will-change:transform;
+}
+
+.memory-item:hover{
+  transform:scale(1.05);
+  box-shadow:0 15px 30px rgba(0,0,0,0.15);
+}
+
+/* FULLSCREEN VIEWER */
+
+.memory-viewer{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.85);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  pointer-events:none;
+  z-index:99999;
+}
+
+.memory-viewer img{
+  max-width:80vw;
+  max-height:80vh;
+  border-radius:20px;
+  transform:scale(0.8);
+}
+
+#closeViewer{
+  position:absolute;
+  top:40px;
+  right:40px;
+  width:45px;
+  height:45px;
+  border:none;
+  border-radius:50%;
+  background:white;
+  font-size:20px;
+  cursor:pointer;
+}
+/* Wrapper for parallax + light */
+
+.memories-grid-wrapper{
+  position:relative;
+  max-width:1200px;
+  margin:auto;
+  overflow:hidden;
+}
+
+/* Moving gradient light */
+
+.light-sweep{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    120deg,
+    transparent 30%,
+    rgba(255,255,255,0.35) 50%,
+    transparent 70%
+  );
+  background-size:200% 100%;
+  pointer-events:none;
+  z-index:2;
+  mix-blend-mode:overlay;
+}
+
+/* Make grid below light */
+
+.memories-grid{
+  position:relative;
+  z-index:1;
+}
+#petalContainer{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:1;
+}
+
+.petal{
+  position:absolute;
+  width:20px;
+  height:20px;
+  background:radial-gradient(circle,#ffb6c1,#ff69b4);
+  border-radius:50% 50% 50% 0;
+  opacity:0.7;
+}
+#confettiContainer{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  overflow:hidden;
+  z-index:9999;
+}
+
+.confetti{
+  position:absolute;
+  width:8px;
+  height:14px;
+  background:gold;
+  opacity:0.9;
+}
+#finalScreen{
+  position:fixed;
+  inset:0;
+  background:white;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  pointer-events:none;
+  z-index:100000;
+}
+
+#finalScreen h1{
+  font-size:clamp(2rem,5vw,4rem);
+  margin:20px 0;
+}
+
+</style>
+</head>
+<body>
+
+  <!-- INTRO SCREEN -->
+<div class="intro-screen" id="introScreen">
+
+  <h2 id="typeLine"></h2>
+  <h1 id="presentsText">PRESENTING</h1>
+
+</div>
+<div id="confettiContainer"></div>
+
+<canvas id="particlesCanvas"></canvas>
+<div id="petalContainer"></div>
+<audio id="bgMusic" src="music.mp3" loop></audio>
+
+
+<!-- HERO -->
+<section class="hero">
+  <h1 class="hero-title">Happy Birthday Momno 💛</h1>
+  <p class="hero-sub">एक छोटा सा गिफ्ट आपके लिये</p>
+</section>
+
+<!-- STORY -->
+<section class="story">
+  <img src="images/our.jpeg" alt="">
+  <div class="text">
+    <h2>Our story</h2><br>
+    From my childhood to where I stand today, you were always there for me.
+    You supported me when I was scared, and celebrated me even when my
+    achievements were small.
+  </div>
+</section>
+
+<!-- LETTER -->
+<section class="letter-section">
+
+  <h2 style="margin-bottom:40px;">A small letter for you</h2>
+
+  <div class="envelope-wrapper" id="envelopeBox">
+
+    <div class="envelope">
+      <div class="env-back"></div>
+      <div class="env-front"></div>
+
+      <button class="env-button" id="openLetter">Open me</button>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- POPUP LETTER -->
+
+<div class="letter-popup" id="letterPopup">
+
+  <button class="close-letter" id="closeLetter">✕</button>
+
+  <div class="letter-content">
+    मेरी प्यारी मम्मी,<br><br>
+शायद मैं कभी भी शब्दों में पूरी तरह नहीं बता पाऊँ कि मैं आपसे कितना प्यार करता हूँ। आप मेरे जीवन की सबसे बड़ी ताकत हैं, मेरी सबसे सुरक्षित जगह, और मेरी हर खुशी की वजह।
+<br>आपने हमेशा मेरा साथ दिया है, हर अच्छे-बुरे वक्त में। जब भी मैं गिरा, आपने मुझे संभाला। जब मैं खुद पर विश्वास नहीं कर पाया, तब आपने मुझ पर मुझसे ज़्यादा विश्वास किया। आपने मेरी हर गलती को माफ किया, बिना किसी शर्त के।
+<br>मुझे पता है, मैंने आपको कई बार दुख पहुँचाया है। कई बार गुस्से में बहुत गलत-गलत बातें भी कह दीं। आपने हर बार मुझे समझा, मुझे माफ किया और फिर से गले लगा लिया।
+<br>आपने मेरे लिए कितनी मेहनत की है, शायद मैं पूरी तरह समझ भी नहीं सकता। मेरी छोटी-छोटी खुशियों के लिए आपने अपनी बड़ी-बड़ी खुशियाँ छोड़ दीं। मेरी हर जीत के पीछे आपकी दुआएँ और आपकी मेहनत है।
+<br>मैं बस इतना कहना चाहता हूँ — मैं आपसे बहुत प्यार करता हूँ।
+<br><br>
+    Love you always 💛
+  </div>
+
+</div>
+
+<!-- VALUES -->
+<section>
+  <h2 style="margin-bottom:40px;">What you taught me</h2>
+  <div class="values">
+    <div class="card">Kindness</div>
+    <div class="card">Patience</div>
+    <div class="card">Strength</div>
+    <div class="card">Honesty</div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="memories-section">
+  <h2 style="margin-bottom:60px;">Memories</h2>
+  <div class="memories-grid-wrapper">
+  <div class="light-sweep"></div>
+  <div class="memories-grid" id="memoriesGrid"></div>
+</div>
+
+</section>
+
+<!-- FULLSCREEN VIEWER -->
+<div class="memory-viewer" id="memoryViewer">
+  <img id="viewerImage">
+  <button id="closeViewer">✕</button>
+</div>
+
+
+<!-- OUTRO -->
+<section class="outro">
+  Everything I am… started with you.
+</section>
+
+<div id="finalScreen">
+  <h1 id="finalText1">I’ll always be your child.</h1>
+  <h1 id="finalText2">Happy Birthday Mummy 💛</h1>
+
+</div>
+
+
+<!-- GSAP -->
+<script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+<script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
+
+<!-- Lenis -->
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+/* ================= MUSIC ================= */
+
+
+const music = document.getElementById("bgMusic");
+
+function startMusic() {
+  music.volume = 0.5; // optional
+  music.play().then(()=>{
+    console.log("Music started");
+  }).catch(err=>{
+    console.log("Playback blocked:", err);
+  });
+}
+
+// Start on ANY user interaction
+["click","touchstart","keydown"].forEach(event=>{
+  document.addEventListener(event, startMusic, { once:true });
+});
+
+
+/* Smooth scroll */
+const lenis = new Lenis({smoothWheel:true});
+function raf(time){
+  lenis.raf(time);
+  requestAnimationFrame(raf);
+}
+requestAnimationFrame(raf);
+
+/* LOCK SCROLL DURING INTRO */
+document.body.style.overflow = "hidden";
+
+const introScreen = document.getElementById("introScreen");
+const typeLine = document.getElementById("typeLine");
+const presents = document.getElementById("presentsText");
+
+const introText = "एक छोटा सा गिफ्ट आपके लिये";
+
+function typeIntro(text, callback){
+  let i = 0;
+  function typing(){
+    if(i < text.length){
+      typeLine.innerHTML += text.charAt(i);
+      i++;
+      setTimeout(typing, 60);
+    } else {
+      callback();
+    }
+  }
+  typing();
+}
+
+/* PRESENTS ANIMATION */
+function showPresents(){
+
+  gsap.to(presents,{
+    opacity:1,
+    scale:1,
+    duration:0.6,
+    ease:"back.out(1.7)"
+  });
+
+  /* neon flashing */
+  gsap.to(presents,{
+    textShadow:
+      "0 0 10px #00f, 0 0 20px #0ff, 0 0 40px #f0f",
+    repeat:-1,
+    yoyo:true,
+    duration:0.4
+  });
+
+  /* bounce */
+  gsap.to(presents,{
+    y:-20,
+    repeat:-1,
+    yoyo:true,
+    duration:0.5,
+    ease:"power1.inOut"
+  });
+
+  /* after 2 sec hide intro */
+  setTimeout(()=>{
+    gsap.to(introScreen,{
+      opacity:0,
+      duration:1,
+      onComplete:()=>{
+        introScreen.style.display="none";
+        document.body.style.overflow="auto";
+        burstConfetti();
+
+        /* smooth scroll to hero */
+        window.scrollTo({top:0,behavior:"smooth"});
+      }
+    });
+  },2000);
+}
+
+/* START INTRO */
+typeIntro(introText, showPresents);
+
+/* ================= CONFETTI BURST ================= */
+
+function burstConfetti(){
+
+  const container = document.getElementById("confettiContainer");
+
+  for(let i=0;i<120;i++){
+
+    const conf = document.createElement("div");
+    conf.classList.add("confetti");
+
+    conf.style.left = window.innerWidth/2 + "px";
+    conf.style.top = window.innerHeight/2 + "px";
+
+    conf.style.background = `hsl(${Math.random()*360},80%,60%)`;
+
+    container.appendChild(conf);
+
+    const angle = Math.random()*Math.PI*2;
+    const distance = 300 + Math.random()*300;
+
+    gsap.to(conf,{
+      x: Math.cos(angle)*distance,
+      y: Math.sin(angle)*distance,
+      rotation: Math.random()*720,
+      duration:2 + Math.random(),
+      ease:"power3.out",
+      onComplete:()=>conf.remove()
+    });
+
+  }
+}
+
+
+/* HERO */
+gsap.from(".hero-title",{y:60,opacity:0,duration:1.2,ease:"power3.out"});
+gsap.from(".hero-sub",{y:30,opacity:0,duration:.8,delay:.3});
+
+/* STORY */
+gsap.from(".story img",{
+  x:-80,opacity:0,
+  scrollTrigger:{trigger:".story",start:"top 70%"}
+});
+gsap.from(".story .text",{
+  x:80,opacity:0,
+  scrollTrigger:{trigger:".story",start:"top 70%"}
+});
+
+/* VALUES */
+gsap.from(".card",{
+  y:60,opacity:0,stagger:.15,
+  scrollTrigger:{trigger:".values",start:"top 75%"}
+});
+
+/* GALLERY */
+gsap.from(".photo",{
+  scale:.8,opacity:0,stagger:.1,
+  scrollTrigger:{trigger:".gallery",start:"top 75%"}
+});
+
+/* OUTRO */
+gsap.from(".outro",{
+  y:60,opacity:0,
+  scrollTrigger:{trigger:".outro",start:"top 75%"}
+});
+
+/* ENVELOPE ANIMATION */
+const openBtn  = document.getElementById("openLetter");
+const closeBtn = document.getElementById("closeLetter");
+const popup    = document.getElementById("letterPopup");
+const content  = popup.querySelector(".letter-content");
+const envelope = document.getElementById("envelopeBox");
+
+let isOpen = false;
+
+/* open animation */
+
+const openTL = gsap.timeline({ paused:true });
+
+openTL
+.to(envelope,{
+  scale:0.9,
+  opacity:0,
+  duration:0.4,
+  ease:"power2.out"
+})
+.set(popup,{
+  pointerEvents:"auto"
+})
+.to(popup,{
+  opacity:1,
+  duration:0.4
+},"<")
+.to(content,{
+  scale:1,
+  duration:0.5,
+  ease:"power3.out"
+},"-=0.1");
+
+/* close animation */
+
+const closeTL = gsap.timeline({ paused:true });
+
+closeTL
+.to(content,{
+  scale:0.85,
+  duration:0.3,
+  ease:"power2.in"
+})
+.to(popup,{
+  opacity:0,
+  duration:0.3
+},"<")
+.set(popup,{
+  pointerEvents:"none"
+})
+.to(envelope,{
+  scale:1,
+  opacity:1,
+  duration:0.4,
+  ease:"power2.out"
+});
+
+
+openBtn.addEventListener("click",()=>{
+
+  if(isOpen) return;
+  isOpen = true;
+
+  openTL.restart();
+});
+
+closeBtn.addEventListener("click",()=>{
+
+  if(!isOpen) return;
+
+  closeTL.restart();
+  isOpen = false;
+});
+
+/* ================= GENERATE 100 IMAGES ================= */
+
+const memoriesGrid = document.getElementById("memoriesGrid");
+
+for(let i = 1; i <= 78; i++){
+
+  const img = document.createElement("img");
+  img.src = `images/${i}.jpeg`;  // Make sure folder exists
+  img.classList.add("memory-item");
+
+  memoriesGrid.appendChild(img);
+}
+/* ================= FLOATING PARALLAX ================= */
+
+const gridWrapper = document.querySelector(".memories-grid-wrapper");
+
+gridWrapper.addEventListener("mousemove", (e) => {
+
+  const { width, height, left, top } = gridWrapper.getBoundingClientRect();
+  const x = (e.clientX - left - width/2) / width;
+  const y = (e.clientY - top - height/2) / height;
+
+  gsap.to(".memory-item", {
+    x: x * 20,
+    y: y * 20,
+    duration: 0.6,
+    ease: "power2.out"
+  });
+
+});
+
+gridWrapper.addEventListener("mouseleave", () => {
+  gsap.to(".memory-item", {
+    x: 0,
+    y: 0,
+    duration: 0.8,
+    ease: "power3.out"
+  });
+});
+/* ================= GRADIENT LIGHT SWEEP ================= */
+
+gsap.to(".light-sweep", {
+  backgroundPosition: "200% 0%",
+  duration: 8,
+  ease: "none",
+  repeat: -1
+});
+
+/* ================= SCROLL REVEAL ================= */
+
+gsap.utils.toArray(".memory-item").forEach((img)=>{
+
+  gsap.fromTo(img,
+    {
+      scale:0.75,
+      opacity:0
+    },
+    {
+      scale:1.08,
+      opacity:1,
+      duration:0.8,
+      ease:"power3.out",
+      scrollTrigger:{
+        trigger:img,
+        start:"top 85%",
+        end:"top 60%",
+        scrub:true
+      }
+    }
+  );
+
+});
+
+
+
+/* ================= FULLSCREEN VIEWER ================= */
+
+const viewer = document.getElementById("memoryViewer");
+const viewerImg = document.getElementById("viewerImage");
+const closeViewer = document.getElementById("closeViewer");
+
+document.addEventListener("click",(e)=>{
+  if(e.target.classList.contains("memory-item")){
+    viewerImg.src = e.target.src;
+
+    gsap.to(viewer,{
+      opacity:1,
+      pointerEvents:"auto",
+      duration:0.4
+    });
+
+    gsap.to(viewerImg,{
+      scale:1,
+      duration:0.5,
+      ease:"power3.out"
+    });
+  }
+});
+
+closeViewer.addEventListener("click",()=>{
+  gsap.to(viewerImg,{scale:0.8,duration:0.3});
+  gsap.to(viewer,{
+    opacity:0,
+    pointerEvents:"none",
+    duration:0.3
+  });
+});
+
+/* ================= PARTICLES ================= */
+
+const canvas = document.getElementById("particlesCanvas");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+
+for(let i=0;i<60;i++){
+  particles.push({
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    r:Math.random()*2+1,
+    d:Math.random()*1
+  });
+}
+
+function drawParticles(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle="rgba(255,200,220,0.4)";
+  ctx.beginPath();
+  for(let i=0;i<particles.length;i++){
+    let p=particles[i];
+    ctx.moveTo(p.x,p.y);
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2,true);
+  }
+  ctx.fill();
+  updateParticles();
+}
+
+function updateParticles(){
+  for(let i=0;i<particles.length;i++){
+    let p=particles[i];
+    p.y += p.d;
+    if(p.y > canvas.height){
+      p.y=0;
+      p.x=Math.random()*canvas.width;
+    }
+  }
+}
+
+setInterval(drawParticles, 33);
+/* ================= PETALS ================= */
+
+const petalContainer = document.getElementById("petalContainer");
+
+function createPetal(){
+  const petal = document.createElement("div");
+  petal.classList.add("petal");
+
+  petal.style.left = Math.random()*100+"vw";
+  petal.style.animationDuration = (5+Math.random()*5)+"s";
+
+  petalContainer.appendChild(petal);
+
+  gsap.to(petal,{
+    y:window.innerHeight+100,
+    rotation:360,
+    duration:6+Math.random()*4,
+    ease:"none",
+    onComplete:()=>petal.remove()
+  });
+}
+
+setInterval(createPetal, 800);
+
+/* ================= REVERSIBLE CINEMATIC ENDING ================= */
+
+const finalTL = gsap.timeline({ paused: true });
+
+finalTL
+  .to("#finalScreen", {
+    opacity: 1,
+    duration: 1.2,
+    ease: "power2.out"
+  })
+  .fromTo("#finalText1",
+    { opacity: 0, y: 30 },
+    { opacity: 1, y: 0, duration: 1.5, ease: "power3.out" },
+    "-=0.5"
+  )
+  .fromTo("#finalText2",
+    { opacity: 0, y: 30 },
+    { opacity: 1, y: 0, duration: 1.5, ease: "power3.out" },
+    "-=0.8"
+  )
+  .to("#finalScreen", {
+    scale: 1.05,
+    duration: 6,
+    ease: "none"
+  }, 0);
+
+
+ScrollTrigger.create({
+  trigger: ".outro",
+  start: "top 60%",
+  end: "bottom bottom",
+  onEnter: () => {
+    finalTL.play();
+    if (typeof music !== "undefined") {
+      gsap.to(music, { volume: 0.2, duration: 2 });
+    }
+  },
+  onLeaveBack: () => {
+    finalTL.reverse();
+    if (typeof music !== "undefined") {
+      gsap.to(music, { volume: 0.6, duration: 2 });
+    }
+  }
+});
+
+
+
+</script>
+
+</body>
+</html>
+
